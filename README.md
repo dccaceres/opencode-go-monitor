@@ -20,23 +20,7 @@ Muestra barras de progreso, dólares usados/restantes y tiempo hasta el reinicio
 - [Bun](https://bun.sh) instalado
 - OpenCode v1.14+ instalado
 
-### Local (desarrollo)
-
-```bash
-# Clonar el repo
-git clone https://github.com/tu-usuario/opencode-go-monitor.git
-cd opencode-go-monitor
-
-# Instalar dependencias
-bun install
-
-# Verificar que compila
-bun typecheck
-```
-
-### En OpenCode
-
-Agregá el plugin a tu `opencode.json`:
+### Opción 1: npm (cuando esté publicado)
 
 ```json
 {
@@ -44,7 +28,35 @@ Agregá el plugin a tu `opencode.json`:
 }
 ```
 
-O cargalo localmente durante desarrollo:
+### Opción 2: directo desde GitHub
+
+```json
+{
+  "plugin": ["git+https://github.com/dccaceres/opencode-go-monitor.git"]
+}
+```
+
+### Opción 3: local (desarrollo / clonado)
+
+```bash
+git clone https://github.com/dccaceres/opencode-go-monitor.git
+cd opencode-go-monitor
+bun install
+```
+
+```json
+{
+  "plugin": ["/ruta/completa/a/opencode-go-monitor"]
+}
+```
+
+### Verificar que compila
+
+```bash
+bun typecheck
+```
+
+### Desarrollo
 
 ```bash
 bun run dev

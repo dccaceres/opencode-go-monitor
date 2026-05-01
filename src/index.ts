@@ -85,7 +85,7 @@ export const OpencodeGoMonitorPlugin: Plugin = async (ctx) => {
         description: 'Actualizar consumo del plan Go',
       };
       cfg.command['go-models'] = {
-        template: 'modelos',
+        template: 'go-models',
         model: 'opencode/big-pickle',
         description: 'Listar modelos disponibles del plan Go',
       };

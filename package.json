@@ -1,28 +1,42 @@
 {
-	"name": "opencode-go-monitor",
-	"version": "0.1.0",
-	"description": "OpenCode plugin",
-	"keywords": [
-		"opencode",
-		"opencode-plugin",
-		"plugin"
-	],
-	"license": "MIT",
-	"files": [
-		"src"
-	],
-	"type": "module",
-	"main": "src/index.ts",
-	"scripts": {
-		"dev": "bun run dev.ts",
-		"typecheck": "tsc --noEmit"
-	},
-	"dependencies": {
-		"@opencode-ai/plugin": "^1.14.30",
-		"@opencode-ai/sdk": "^1.14.30"
-	},
-	"devDependencies": {
-		"@types/bun": "^1.3.8",
-		"typescript": "^5.7.2"
-	}
+  "name": "opencode-go-monitor",
+  "version": "1.0.0",
+  "description": "Monitoreo del plan Go de OpenCode en tiempo real. Comandos /go-quota, /go-limits, /go-refresh, /go-models.",
+  "author": "Daniel Caceres",
+  "keywords": [
+    "opencode",
+    "opencode-plugin",
+    "plugin",
+    "opencode-go",
+    "go-plan",
+    "quota"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/dccaceres/opencode-go-monitor",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dccaceres/opencode-go-monitor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dccaceres/opencode-go-monitor/issues"
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "bun run dev.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@opencode-ai/plugin": "^1.14.30",
+    "@opencode-ai/sdk": "^1.14.30"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.8",
+    "typescript": "^5.7.2"
+  }
+}
 }
