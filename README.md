@@ -108,9 +108,17 @@ Cada 5 minutos el plugin verifica el consumo en background. Si se supera el 70%,
 
 ### Modelos incluidos
 
-- MiniMax M2.5
-- Kimi K2.5
-- GLM-5
+> ℹ️ Modelos disponibles hasta ahora. Pueden variar según el plan Go.
+
+- MiniMax M2.7, M2.5
+- Kimi K2.6, K2.5
+- GLM 5.1, 5
+- DeepSeek V4 Pro, V4 Flash
+- Qwen 3.6 Plus, 3.5 Plus
+- Mimo V2 Pro, V2 Omni, V2.5 Pro, V2.5
+- Total: 14 modelos
+
+> Usá `/go-models` en OpenCode para ver la lista actualizada en tiempo real.
 
 ## Estructura del proyecto
 

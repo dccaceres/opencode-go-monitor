@@ -34,6 +34,8 @@ export async function fetchModels(ctx: PluginInput, config: PluginConfig): Promi
 
     lineas.push('');
     lineas.push(`  Total: ${modelos.length} modelos`);
+    lineas.push('  📌 Modelos disponibles hasta ahora.');
+    lineas.push('     Pueden variar según el plan Go.');
     lineas.push('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     lineas.push('');
 

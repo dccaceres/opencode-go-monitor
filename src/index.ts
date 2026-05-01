@@ -108,7 +108,7 @@ export const OpencodeGoMonitorPlugin: Plugin = async (ctx) => {
         description: 'Show Go plan limits',
         args: {},
         async execute() {
-          return `⚡ 5h $12  ·  📆 Sem $30  ·  🗓️ Mes $60\n🤖 MiniMax M2.5 · Kimi K2.5 · GLM-5\n💡 Al pasarte: créditos Zen`;
+          return `⚡ 5h $12  ·  📆 Sem $30  ·  🗓️ Mes $60\n💡 Al pasarte: créditos Zen\n📌 Modelos disponibles: usá /go-models`;
         },
       }),
 
