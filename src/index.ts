@@ -70,17 +70,17 @@ export const OpencodeGoMonitorPlugin: Plugin = async (ctx) => {
       cfg.command = cfg.command ?? {};
       cfg.command['go-quota'] = {
         template: 'consumo',
-        model: 'big-pickle',
+        model: 'opencode/big-pickle',
         description: 'Consumo del plan Go',
       };
       cfg.command['go-limits'] = {
         template: 'limites',
-        model: 'big-pickle',
+        model: 'opencode/big-pickle',
         description: 'Límites del plan Go',
       };
       cfg.command['go-refresh'] = {
         template: 'actualizar',
-        model: 'big-pickle',
+        model: 'opencode/big-pickle',
         description: 'Actualizar consumo del plan Go',
       };
       await logMessage(ctx, 'info', 'Go Monitor loaded. /go-quota /go-limits /go-refresh');
