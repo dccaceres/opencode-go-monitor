@@ -4,6 +4,7 @@ import type { GoUsage, PluginConfig } from './types';
 import { fetchUsage, getTestUsage } from './monitor';
 import { checkThresholds, showNotification } from './notifier';
 import { logMessage } from './commands';
+import { fetchModels } from './models';
 
 function loadConfig(): PluginConfig | null {
   const workspaceId = process.env.OPENCODE_GO_WORKSPACE_ID;
@@ -83,7 +84,12 @@ export const OpencodeGoMonitorPlugin: Plugin = async (ctx) => {
         model: 'opencode/big-pickle',
         description: 'Actualizar consumo del plan Go',
       };
-      await logMessage(ctx, 'info', 'Go Monitor loaded. /go-quota /go-limits /go-refresh');
+      cfg.command['go-models'] = {
+        template: 'modelos',
+        model: 'opencode/big-pickle',
+        description: 'Listar modelos disponibles del plan Go',
+      };
+      await logMessage(ctx, 'info', 'Go Monitor loaded. /go-quota /go-limits /go-refresh /go-models');
     },
 
     tool: {
@@ -114,6 +120,14 @@ export const OpencodeGoMonitorPlugin: Plugin = async (ctx) => {
           if (!u) return '❌ No se pudieron actualizar los datos';
           const { currentPeriod, weekly, monthly } = u;
           return `${quote(currentPeriod.percentage)}  5h  $${currentPeriod.used.toFixed(2)} / $${currentPeriod.limit}  ·  ${currentPeriod.remainingTime}\n${quote(weekly.percentage)}  Sem $${weekly.used.toFixed(2)} / $${weekly.limit}  ·  $${(weekly.limit - weekly.used).toFixed(2)} libres\n${quote(monthly.percentage)}  Mes $${monthly.used.toFixed(2)} / $${monthly.limit}  ·  $${(monthly.limit - monthly.used).toFixed(2)} libres`;
+        },
+      }),
+
+      'go-models': tool({
+        description: 'List available Go plan models',
+        args: {},
+        async execute() {
+          return await fetchModels(ctx, cfg);
         },
       }),
     },

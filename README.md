@@ -11,6 +11,7 @@ Muestra barras de progreso, dólares usados/restantes y tiempo hasta el reinicio
 | `/go-quota` | Muestra uso actual del plan Go (ventana 5h, semanal, mensual) |
 | `/go-limits` | Muestra límites del plan y modelos incluidos |
 | `/go-refresh` | Fuerza actualización de los datos |
+| `/go-models` | Lista todos los modelos disponibles del plan Go |
 
 ## Instalación
 
