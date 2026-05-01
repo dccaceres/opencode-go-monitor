@@ -68,23 +68,23 @@ export const OpencodeGoMonitorPlugin: Plugin = async (ctx) => {
   return {
     config: async (cfg) => {
       cfg.command = cfg.command ?? {};
-      cfg.command['consumo'] = {
+      cfg.command['go-quota'] = {
         template: 'consumo',
         description: 'Consumo del plan Go',
       };
-      cfg.command['limites'] = {
+      cfg.command['go-limits'] = {
         template: 'limites',
         description: 'Límites del plan Go',
       };
-      cfg.command['actualizar'] = {
+      cfg.command['go-refresh'] = {
         template: 'actualizar',
         description: 'Actualizar consumo del plan Go',
       };
-      await logMessage(ctx, 'info', 'Go Monitor loaded. /consumo /limites /actualizar');
+      await logMessage(ctx, 'info', 'Go Monitor loaded. /go-quota /go-limits /go-refresh');
     },
 
     tool: {
-      consumo: tool({
+      'go-quota': tool({
         description: 'Show current Go plan usage',
         args: {},
         async execute() {
@@ -95,7 +95,7 @@ export const OpencodeGoMonitorPlugin: Plugin = async (ctx) => {
         },
       }),
 
-      limites: tool({
+      'go-limits': tool({
         description: 'Show Go plan limits',
         args: {},
         async execute() {
@@ -103,7 +103,7 @@ export const OpencodeGoMonitorPlugin: Plugin = async (ctx) => {
         },
       }),
 
-      actualizar: tool({
+      'go-refresh': tool({
         description: 'Force refresh Go plan data',
         args: {},
         async execute() {
