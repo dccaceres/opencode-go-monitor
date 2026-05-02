@@ -1,10 +1,11 @@
 import type { Plugin, PluginInput } from '@opencode-ai/plugin';
 import { tool } from '@opencode-ai/plugin';
+import type { Part } from '@opencode-ai/sdk';
 import type { GoUsage, PluginConfig } from './types';
+import { fetchModels } from './models';
 import { fetchUsage, getTestUsage } from './monitor';
 import { checkThresholds, showNotification } from './notifier';
 import { logMessage } from './commands';
-import { fetchModels } from './models';
 
 function loadConfig(): PluginConfig | null {
   const workspaceId = process.env.OPENCODE_GO_WORKSPACE_ID;
@@ -66,6 +67,11 @@ export const OpencodeGoMonitorPlugin: Plugin = async (ctx) => {
     return `${emoji} ${barra} ${p}%`;
   };
 
+  const formatUsage = (u: GoUsage) => {
+    const { currentPeriod, weekly, monthly } = u;
+    return `${quote(currentPeriod.percentage)}  5h  $${currentPeriod.used.toFixed(2)} / $${currentPeriod.limit}  ·  ${currentPeriod.remainingTime}\n${quote(weekly.percentage)}  Sem $${weekly.used.toFixed(2)} / $${weekly.limit}  ·  $${(weekly.limit - weekly.used).toFixed(2)} libres\n${quote(monthly.percentage)}  Mes $${monthly.used.toFixed(2)} / $${monthly.limit}  ·  $${(monthly.limit - monthly.used).toFixed(2)} libres`;
+  };
+
   return {
     config: async (cfg) => {
       cfg.command = cfg.command ?? {};
@@ -85,8 +91,7 @@ export const OpencodeGoMonitorPlugin: Plugin = async (ctx) => {
         description: 'Actualizar consumo del plan Go',
       };
       cfg.command['go-models'] = {
-        template: 'go-models',
-        model: 'opencode/big-pickle',
+        template: 'modelos',
         description: 'Listar modelos disponibles del plan Go',
       };
       await logMessage(ctx, 'info', 'Go Monitor loaded. /go-quota /go-limits /go-refresh /go-models');
@@ -97,10 +102,8 @@ export const OpencodeGoMonitorPlugin: Plugin = async (ctx) => {
         description: 'Show current Go plan usage',
         args: {},
         async execute() {
-          let u = await getCurrentUsage(ctx, cfg);
-          if (!u) u = getTestUsage();
-          const { currentPeriod, weekly, monthly } = u;
-          return `${quote(currentPeriod.percentage)}  5h  $${currentPeriod.used.toFixed(2)} / $${currentPeriod.limit}  ·  ${currentPeriod.remainingTime}\n${quote(weekly.percentage)}  Sem $${weekly.used.toFixed(2)} / $${weekly.limit}  ·  $${(weekly.limit - weekly.used).toFixed(2)} libres\n${quote(monthly.percentage)}  Mes $${monthly.used.toFixed(2)} / $${monthly.limit}  ·  $${(monthly.limit - monthly.used).toFixed(2)} libres`;
+          const u = await getCurrentUsage(ctx, cfg);
+          return formatUsage(u ?? getTestUsage());
         },
       }),
 
@@ -116,10 +119,9 @@ export const OpencodeGoMonitorPlugin: Plugin = async (ctx) => {
         description: 'Force refresh Go plan data',
         args: {},
         async execute() {
-          let u = await getCurrentUsage(ctx, cfg);
+          const u = await getCurrentUsage(ctx, cfg);
           if (!u) return '❌ No se pudieron actualizar los datos';
-          const { currentPeriod, weekly, monthly } = u;
-          return `${quote(currentPeriod.percentage)}  5h  $${currentPeriod.used.toFixed(2)} / $${currentPeriod.limit}  ·  ${currentPeriod.remainingTime}\n${quote(weekly.percentage)}  Sem $${weekly.used.toFixed(2)} / $${weekly.limit}  ·  $${(weekly.limit - weekly.used).toFixed(2)} libres\n${quote(monthly.percentage)}  Mes $${monthly.used.toFixed(2)} / $${monthly.limit}  ·  $${(monthly.limit - monthly.used).toFixed(2)} libres`;
+          return formatUsage(u);
         },
       }),
 
@@ -130,6 +132,42 @@ export const OpencodeGoMonitorPlugin: Plugin = async (ctx) => {
           return await fetchModels(ctx, cfg);
         },
       }),
+    },
+
+    'command.execute.before': async (
+      input: { command: string; sessionID: string; arguments: string },
+      output: { parts: Part[] },
+    ) => {
+      let text: string;
+
+      switch (input.command) {
+        case 'go-quota': {
+          const u = await getCurrentUsage(ctx, cfg);
+          text = formatUsage(u ?? getTestUsage());
+          break;
+        }
+        case 'go-refresh': {
+          const u = await getCurrentUsage(ctx, cfg);
+          text = u ? formatUsage(u) : '❌ No se pudieron actualizar los datos';
+          break;
+        }
+        case 'go-limits':
+          text = '⚡ 5h $12  ·  📆 Sem $30  ·  🗓️ Mes $60\n💡 Al pasarte: créditos Zen\n📌 Modelos disponibles: usá /go-models';
+          break;
+        case 'go-models':
+          text = await fetchModels(ctx, cfg);
+          break;
+        default:
+          return;
+      }
+
+      output.parts.push({
+        id: crypto.randomUUID(),
+        sessionID: input.sessionID,
+        messageID: crypto.randomUUID(),
+        type: 'text',
+        text,
+      });
     },
   };
 };
