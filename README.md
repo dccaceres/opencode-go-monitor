@@ -83,7 +83,7 @@ export OPENCODE_GO_AUTH_COOKIE="tu-auth-cookie"
 Con las credenciales configuradas y OpenCode corriendo:
 
 ```
-/consumo
+/go-quota
 ```
 
 El AI va a ejecutar la tool y mostrar algo como:

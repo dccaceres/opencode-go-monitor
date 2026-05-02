@@ -76,22 +76,19 @@ export const OpencodeGoMonitorPlugin: Plugin = async (ctx) => {
     config: async (cfg) => {
       cfg.command = cfg.command ?? {};
       cfg.command['go-quota'] = {
-        template: 'consumo',
-        model: 'opencode/big-pickle',
+        template: 'Estos son el consumo actual de tu plan Opencode Go.',
         description: 'Consumo del plan Go',
       };
       cfg.command['go-limits'] = {
-        template: 'limites',
-        model: 'opencode/big-pickle',
+        template: 'Estos son los limites actuales del Plan de Opencode Go.',
         description: 'Límites del plan Go',
       };
       cfg.command['go-refresh'] = {
-        template: 'actualizar',
-        model: 'opencode/big-pickle',
+        template: 'Se ha actualizado el estado de consumo de tu plan de Opencode Go.',
         description: 'Actualizar consumo del plan Go',
       };
       cfg.command['go-models'] = {
-        template: 'modelos',
+        template: 'Estos son los modelos actuales del plan Opencode Go.',
         description: 'Listar modelos disponibles del plan Go',
       };
       await logMessage(ctx, 'info', 'Go Monitor loaded. /go-quota /go-limits /go-refresh /go-models');
